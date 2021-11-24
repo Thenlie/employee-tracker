@@ -6,9 +6,9 @@ VALUES
 
 INSERT INTO roles (title, salary, department_id)
 VALUES
-    ('manager', 80000, 1),
-    ('manager', 70000, 2),
-    ('manager', 60000, 3),
+    ('sales_manager', 80000, 1),
+    ('design_manager', 70000, 2),
+    ('manufacturing_manager', 60000, 3),
     ('sales_associate', 30000, 1),
     ('designer', 40000, 2),
     ('machine_operator', 25000, 3),

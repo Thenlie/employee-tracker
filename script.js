@@ -1,10 +1,16 @@
 const db = require('./db/connection');
 const inquirer = require('inquirer');
-const { employeeArrFill, deptArrFill, roleArrFill } = require('./utils/index');
+const { deptArrFill, roleArrFill, employeeArrFill, managerArrFill, getDept, getRoles, getEmployees } = require('./utils/index');
 
+// Array of data
 const deptArr = deptArrFill();
 const roleArr = roleArrFill();
 const employeeArr = employeeArrFill();
+const managerArr = managerArrFill();
+// Array of objects
+const departments = getDept();
+const roles = getRoles();
+const employees = getEmployees();
 
 const initPrompt = () => {
     return inquirer 
@@ -15,6 +21,7 @@ const initPrompt = () => {
             choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role']
         })
         .then((ans) => {
+            console.log('hit')
             return ans;
         })
 };
@@ -27,6 +34,7 @@ const addDept = () => {
             message: 'What is the name of the department?'
         }])  
         .then((ans) => {
+            // TODO: Create a new department in SQL and re-populate the tables (make obj?)
             return (ans);
         })  
 };
@@ -42,11 +50,13 @@ const addRole = () => {
             name: 'salary',
             message: 'What is the salary of the role?'
             }, {
-            type: 'input',
+            type: 'list',
             name: 'department',
-            message: 'What department does the role belong to?'
+            message: 'What department does the role belong to?',
+            choices: deptArr
         }])
         .then((ans) => {
+            // TODO: Create a new role in SQL and re-populate the tables (make obj?)
             return ans;
         })    
 };
@@ -64,16 +74,17 @@ const addEmployee = () => {
         }, {
             type: 'list',
             name: 'role',
-            message: "What is the employee's last name?",
-            choices: []
+            message: "What is the employee's role?",
+            choices: roleArr
         }, {
             type: 'list',
             name: 'manager',
-            message: "What is the employee's last name?",
-            choices: []
+            message: "Who is the employee's manager?",
+            choices: managerArr
         }])
         .then((ans) => {
-
+            // TODO: Create a new employee in SQL and re-populate the tables (make obj?)
+            return ans;
         })    
 };
 
@@ -86,7 +97,7 @@ const updateRole = () => {
             choices: employeeArr
         }])
         .then((ans) => {
-
+            // TODO: Ask for more information, Update employee with new information
         })    
 };
 
@@ -95,15 +106,15 @@ const init = () => {
         .then(ans => {
             switch (ans.action) {
                 case 'view all departments':
-                    console.log(deptArr);
+                    console.table(departments);
                     init();
                     return;
                 case 'view all roles':
-                    console.log(roleArr);
+                    console.table(roles);
                     init();
                     return;
                 case 'view all employees':
-                    console.log(employeeArr);
+                    console.table(employees);
                     init();
                     return;
                 case 'add a department':
