@@ -76,7 +76,6 @@ const getDept = () => {
             departments.push(rows[i]);
         }
     });
-    console.log(departments)
     return departments;
 };
 
@@ -94,7 +93,7 @@ const getRoles = () => {
     return roles;
 };
 
-// PGet employees
+// Get employees
 const getEmployees = () => {
     db.query(`SELECT * FROM employees ORDER BY last_name`, (err, rows) => {
         if (err) {

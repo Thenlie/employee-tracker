@@ -1,6 +1,9 @@
 const db = require('./db/connection');
 const inquirer = require('inquirer');
 const { deptArrFill, roleArrFill, employeeArrFill, managerArrFill, getDept, getRoles, getEmployees } = require('./utils/index');
+const Department = require('./lib/Department');
+const Roles = require('./lib/Roles');
+const Employee = require('./lib/Employee');
 
 // Array of data
 const deptArr = deptArrFill();
@@ -21,7 +24,6 @@ const initPrompt = () => {
             choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role']
         })
         .then((ans) => {
-            console.log('hit')
             return ans;
         })
 };
@@ -35,6 +37,9 @@ const addDept = () => {
         }])  
         .then((ans) => {
             // TODO: Create a new department in SQL and re-populate the tables (make obj?)
+            console.log(ans);
+            const department = new Department(ans.name);
+            console.log(department)
             return (ans);
         })  
 };
@@ -43,7 +48,7 @@ const addRole = () => {
     return inquirer
         .prompt([{
             type: 'input',
-            name: 'role',
+            name: 'title',
             message: 'What is the name of the role?'
             }, {
             type: 'input',
@@ -57,6 +62,9 @@ const addRole = () => {
         }])
         .then((ans) => {
             // TODO: Create a new role in SQL and re-populate the tables (make obj?)
+            console.log(ans);
+            const role = new Roles(ans.title, ans.salary, ans.department)
+            console.log(role)
             return ans;
         })    
 };
@@ -84,6 +92,9 @@ const addEmployee = () => {
         }])
         .then((ans) => {
             // TODO: Create a new employee in SQL and re-populate the tables (make obj?)
+            console.log(ans);
+            const employee = new Employee(ans.firstName, ans.lastName, ans.role, ans.manager);
+            console.log(employee);
             return ans;
         })    
 };
@@ -130,7 +141,6 @@ const init = () => {
                     updateRole();
                     return;
             }
-            console.log(ans.action);
         })
 };
 
