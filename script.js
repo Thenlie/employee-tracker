@@ -1,6 +1,7 @@
 const db = require('./db/connection');
 const inquirer = require('inquirer');
 const { deptArrFill, roleArrFill, employeeArrFill, managerArrFill, getDept, getRoles, getEmployees } = require('./utils/index');
+const { newDept, newRole, newEmployee } = require('./utils/newData');
 const Department = require('./lib/Department');
 const Roles = require('./lib/Roles');
 const Employee = require('./lib/Employee');
@@ -36,11 +37,9 @@ const addDept = () => {
             message: 'What is the name of the department?'
         }])  
         .then((ans) => {
-            // TODO: Create a new department in SQL and re-populate the tables (make obj?)
-            console.log(ans);
             const department = new Department(ans.name);
-            console.log(department)
-            return (ans);
+            newDept(department);
+            return;
         })  
 };
 
@@ -62,10 +61,9 @@ const addRole = () => {
         }])
         .then((ans) => {
             // TODO: Create a new role in SQL and re-populate the tables (make obj?)
-            console.log(ans);
-            const role = new Roles(ans.title, ans.salary, ans.department)
-            console.log(role)
-            return ans;
+            const role = new Roles(ans.title, ans.salary, ans.department);
+            newRole(role);
+            return init();
         })    
 };
 
@@ -92,10 +90,9 @@ const addEmployee = () => {
         }])
         .then((ans) => {
             // TODO: Create a new employee in SQL and re-populate the tables (make obj?)
-            console.log(ans);
             const employee = new Employee(ans.firstName, ans.lastName, ans.role, ans.manager);
-            console.log(employee);
-            return ans;
+            newEmployee(employee);
+            return init();
         })    
 };
 
@@ -112,36 +109,36 @@ const updateRole = () => {
         })    
 };
 
+const connect = () => {
+    db.connect(err => {
+        if (err) throw err;
+    })
+}
+
 const init = () => {
     initPrompt()
         .then(ans => {
             switch (ans.action) {
                 case 'view all departments':
                     console.table(departments);
-                    init();
-                    return;
+                    return init();
                 case 'view all roles':
                     console.table(roles);
-                    init();
-                    return;
+                    return init();
                 case 'view all employees':
                     console.table(employees);
-                    init();
-                    return;
+                    return init();
                 case 'add a department':
-                    addDept();
-                    return;
+                    return addDept();
                 case 'add a role':
-                    addRole();
-                    return;
+                    return addRole();
                 case 'add an employee':
-                    addEmployee();
-                    return;
+                    return addEmployee();
                 case 'update an employee role':
-                    updateRole();
-                    return;
+                    return updateRole();
             }
         })
 };
 
+connect();
 init();
