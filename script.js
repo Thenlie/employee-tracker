@@ -11,10 +11,11 @@ const deptArr = deptArrFill();
 const roleArr = roleArrFill();
 const employeeArr = employeeArrFill();
 const managerArr = managerArrFill();
+
 // Array of objects
-const departments = getDept();
-const roles = getRoles();
-const employees = getEmployees();
+let departments = getDept();
+let roles = getRoles();
+let employees = getEmployees();
 
 const initPrompt = () => {
     return inquirer 
@@ -39,7 +40,8 @@ const addDept = () => {
         .then((ans) => {
             const department = new Department(ans.name);
             newDept(department);
-            return;
+            console.log('Department Added!');
+            return init();
         })  
 };
 
@@ -60,9 +62,13 @@ const addRole = () => {
             choices: deptArr
         }])
         .then((ans) => {
-            // TODO: Create a new role in SQL and re-populate the tables (make obj?)
-            const role = new Roles(ans.title, ans.salary, ans.department);
-            newRole(role);
+            db.query(`SELECT id FROM department WHERE name = '${ans.department}'`, (err, row) => {
+                if (err) throw err;
+                var deptId = (row[0].id)
+                const role = new Roles(ans.title, ans.salary, deptId);
+                newRole(role);
+            })
+            console.log('Role Added!');
             return init();
         })    
 };
@@ -89,9 +95,15 @@ const addEmployee = () => {
             choices: managerArr
         }])
         .then((ans) => {
-            // TODO: Create a new employee in SQL and re-populate the tables (make obj?)
-            const employee = new Employee(ans.firstName, ans.lastName, ans.role, ans.manager);
-            newEmployee(employee);
+            console.log(ans.role)
+            db.query(`SELECT id FROM roles WHERE title = '${ans.role}'`, (err, row) => {
+                if (err) throw err;
+                var rowId = row[0].id
+            })
+            // db.query(`SELECT id FROM employees WHERE first_name = '${}'`)
+            // const employee = new Employee(ans.firstName, ans.lastName, ans.role, ans.manager);
+            // newEmployee(employee);
+            // console.log('Employee Added!');
             return init();
         })    
 };
@@ -120,7 +132,9 @@ const init = () => {
         .then(ans => {
             switch (ans.action) {
                 case 'view all departments':
+                    let testVar = getDept();
                     console.table(departments);
+                    console.table(testVar);
                     return init();
                 case 'view all roles':
                     console.table(roles);

@@ -3,11 +3,10 @@ const db = require('../db/connection');
 const deptArr = [];
 const roleArr = [];
 const employeeArr = [];
-const managerArr = [];
 
-const departments = [];
-const roles = [];
-const employees = [];
+// let departments = [];
+let roles = [];
+let employees = [];
 
 // Populate array with departments
 const deptArrFill = () => {
@@ -53,7 +52,8 @@ const employeeArrFill = () => {
 
 // Populate array with managers
 const managerArrFill = () => {
-    db.query(`SELECT * FROM employees WHERE manager_id = null`, (err, rows) => {
+    const managerArr = [];
+    db.query(`SELECT * FROM employees WHERE manager_id IS NULL`, (err, rows) => {
         if (err) {
             console.log(err);
             return;
@@ -67,6 +67,7 @@ const managerArrFill = () => {
 
 // Get departments
 const getDept = () => {
+    const departments = [];
     db.query(`SELECT * FROM department`, (err, rows) => {
         if (err) {
             console.log(err);

@@ -2,10 +2,9 @@ const db = require('../db/connection');
 
 const newDept = (obj) => {
     const sql = `INSERT INTO department (name) VALUES ('${obj.name}')`;
-    console.log(sql)
     db.query(sql, (err, res) => {
         if (err) throw err;
-        console.log('Department Added!');
+        return;
     })
 };
 
@@ -14,7 +13,7 @@ const newRole = (obj) => {
     const params = [obj.title, obj.salary, obj.department_id];
     db.query(sql, params, (err, res) => {
         if (err) throw err;
-        console.log('Role Added!');
+        return;
     })
 };
 
@@ -23,7 +22,7 @@ const newEmployee = (obj) => {
     const params = [obj.first_name, obj.last_name, obj.role_id, obj.manager_id];
     db.query(sql, params, (err, res) => {
         if (err) throw err;
-        console.log('Employee Added!');
+        return;
     })
 };
 
