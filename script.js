@@ -95,42 +95,9 @@ const addEmployee = () => {
             choices: managerArr
         }])
         .then((ans) => {
-            const firstName = ans.manager.split(' ')[0];
-            const lastName = ans.manager.split(' ')[1];
-            var roleId = 0;
-            var managerId = 0;
-            const getRoleId = () => {
-                return new Promise((res, rej) => {
-                    db.query(`SELECT id FROM roles WHERE title = '${ans.role}'`,(err, row) => {
-                        if (err) {
-                            return rej(err);
-                        }
-                        return res(row[0].id);
-                    })
-                })
-            }
-            const getManagerId = () => {
-                return new Promise((res, rej) => {
-                db.query(`SELECT id FROM employees WHERE first_name = '${firstName}' AND last_name = '${lastName}'`, (err, row) => {
-                    if (err) {
-                        rej(err);
-                    }
-                    return res(row[0].id);
-                });
-                });
-            }
-            getRoleId().then(function(res) {
-                console.log(res);
-                roleId = res
-            });
-            getManagerId().then(function(res) {
-                console.log(res);
-                managerId = res
-            });
-            console.log(roleId, managerId)
-            // const employee = new Employee(ans.firstName, ans.lastName, roleId, managerId);
-            // newEmployee(employee);
-            // console.log('Employee Added!');
+            const employee = new Employee(ans.firstName, ans.lastName, ans.role, ans.manager);
+            newEmployee(employee);
+            console.log('Employee Added!');
             return init();
         })    
 };
@@ -159,9 +126,9 @@ const init = () => {
         .then(ans => {
             switch (ans.action) {
                 case 'view all departments':
-                    let testVar = getDept();
+                    // let testVar = getDept();
                     console.table(departments);
-                    console.table(testVar);
+                    // console.table(testVar);
                     return init();
                 case 'view all roles':
                     console.table(roles);

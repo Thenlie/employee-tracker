@@ -24,13 +24,13 @@ const deptArrFill = () => {
 
 // Populate array with roles
 const roleArrFill = () => {
-    db.query(`SELECT * FROM roles`, (err, rows) => {
+    db.query(`SELECT DISTINCT * FROM roles`, (err, rows) => {
         if (err) {
             console.log(err);
             return;
         }
         for (let i = 0; i < rows.length; i++) {
-            roleArr.push(rows[i].title)
+            roleArr.push({name:rows[i].title, value:rows[i].id}) 
         }
     });
     return roleArr;
@@ -59,7 +59,7 @@ const managerArrFill = () => {
             return;
         }
         for (let i = 0; i < rows.length; i++) {
-            managerArr.push(rows[i].first_name + ' ' + rows[i].last_name)
+            managerArr.push({name:rows[i].first_name + ' ' + rows[i].last_name, value:rows[i].id})
         }
     });
     return managerArr;
