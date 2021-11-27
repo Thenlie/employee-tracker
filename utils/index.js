@@ -48,7 +48,7 @@ const employeeArrFill = () => {
 
 // Populate array with managers
 const managerArrFill = () => {
-    const managerArr = ['null'];
+    const managerArr = ['none'];
     db.query(`SELECT * FROM employees WHERE manager_id IS NULL`, (err, rows) => {
         if (err) {
             console.log(err);
@@ -57,7 +57,6 @@ const managerArrFill = () => {
         for (let i = 0; i < rows.length; i++) {
             managerArr.push({name:rows[i].first_name + ' ' + rows[i].last_name, value:rows[i].id})
         }
-        // managerArr.push('NULL');
     });
     return managerArr;
 };

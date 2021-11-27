@@ -23,7 +23,7 @@ const initPrompt = () => {
             type: 'list',
             name: 'action',
             message: 'What would you like to do?',
-            choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role']
+            choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role', 'quit']
         })
         .then((ans) => {
             return ans;
@@ -96,7 +96,7 @@ const addEmployee = () => {
         }])
         .then((ans) => {
             let managerId = '';
-            (ans.manager === 'null') ? managerId = null : managerId = ans.manager;
+            (ans.manager === 'none') ? managerId = null : managerId = ans.manager;
             const employee = new Employee(ans.firstName, ans.lastName, ans.role, managerId);
             newEmployee(employee);
             console.log('Employee Added!');
@@ -158,6 +158,8 @@ const init = () => {
                     return addEmployee();
                 case 'update an employee role':
                     return updateEmployee();
+                case 'quit':
+                    process.exit();
             }
         })
 };
