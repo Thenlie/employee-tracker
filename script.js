@@ -41,6 +41,7 @@ const addDept = () => {
             const department = new Department(ans.name);
             newDept(department);
             console.log('Department Added!');
+            departments = getDept();
             return init();
         })  
 };
@@ -62,13 +63,10 @@ const addRole = () => {
             choices: deptArr
         }])
         .then((ans) => {
-            db.query(`SELECT id FROM department WHERE name = '${ans.department}'`, (err, row) => {
-                if (err) throw err;
-                var deptId = (row[0].id)
-                const role = new Roles(ans.title, ans.salary, deptId);
-                newRole(role);
-            })
+            const role = new Roles(ans.title, ans.salary, ans.department);
+            newRole(role);
             console.log('Role Added!');
+            roles = getRoles();
             return init();
         })    
 };
@@ -98,6 +96,7 @@ const addEmployee = () => {
             const employee = new Employee(ans.firstName, ans.lastName, ans.role, ans.manager);
             newEmployee(employee);
             console.log('Employee Added!');
+            employees = getEmployees();
             return init();
         })    
 };
@@ -126,9 +125,9 @@ const init = () => {
         .then(ans => {
             switch (ans.action) {
                 case 'view all departments':
-                    // let testVar = getDept();
+                    // let x = getDept();
                     console.table(departments);
-                    // console.table(testVar);
+                    // console.table(x);
                     return init();
                 case 'view all roles':
                     console.table(roles);

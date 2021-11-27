@@ -4,10 +4,6 @@ const deptArr = [];
 const roleArr = [];
 const employeeArr = [];
 
-// let departments = [];
-let roles = [];
-let employees = [];
-
 // Populate array with departments
 const deptArrFill = () => {
     db.query(`SELECT * FROM department`, (err, rows) => {
@@ -16,7 +12,7 @@ const deptArrFill = () => {
             return;
         }
         for (let i = 0; i < rows.length; i++) {
-            deptArr.push(rows[i].name)
+            deptArr.push({name:rows[i].name, value:rows[i].id});
         }
     });
     return deptArr;
@@ -30,7 +26,7 @@ const roleArrFill = () => {
             return;
         }
         for (let i = 0; i < rows.length; i++) {
-            roleArr.push({name:rows[i].title, value:rows[i].id}) 
+            roleArr.push({name:rows[i].title, value:rows[i].id}) ;
         }
     });
     return roleArr;
@@ -44,7 +40,7 @@ const employeeArrFill = () => {
             return;
         }
         for (let i = 0; i < rows.length; i++) {
-            employeeArr.push(rows[i].first_name + ' ' + rows[i].last_name)
+            employeeArr.push(rows[i].first_name + ' ' + rows[i].last_name);
         }
     });
     return employeeArr;
@@ -82,6 +78,7 @@ const getDept = () => {
 
 // Get roles
 const getRoles = () => {
+    const roles = [];
     db.query(`SELECT * FROM roles`, (err, rows) => {
         if (err) {
             console.log(err);
@@ -96,6 +93,7 @@ const getRoles = () => {
 
 // Get employees
 const getEmployees = () => {
+    const employees = [];
     db.query(`SELECT * FROM employees ORDER BY last_name`, (err, rows) => {
         if (err) {
             console.log(err);
