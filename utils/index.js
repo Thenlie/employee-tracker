@@ -48,7 +48,7 @@ const employeeArrFill = () => {
 
 // Populate array with managers
 const managerArrFill = () => {
-    const managerArr = [];
+    const managerArr = ['null'];
     db.query(`SELECT * FROM employees WHERE manager_id IS NULL`, (err, rows) => {
         if (err) {
             console.log(err);
@@ -57,6 +57,7 @@ const managerArrFill = () => {
         for (let i = 0; i < rows.length; i++) {
             managerArr.push({name:rows[i].first_name + ' ' + rows[i].last_name, value:rows[i].id})
         }
+        // managerArr.push('NULL');
     });
     return managerArr;
 };
@@ -64,7 +65,7 @@ const managerArrFill = () => {
 // Get departments
 const getDept = () => {
     const departments = [];
-    db.query(`SELECT name FROM department`, (err, rows) => {
+    db.query(`SELECT * FROM department`, (err, rows) => {
         if (err) {
             console.log(err);
             return;
@@ -95,7 +96,8 @@ const getRoles = () => {
 const getEmployees = () => {
     const employees = [];
     // db.query(`SELECT * FROM employees ORDER BY last_name`, (err, rows) => {
-    db.query(`SELECT first_name, last_name, roles.title AS role FROM employees LEFT JOIN roles ON employees.role_id = roles.id`, (err, rows) => {
+    // db.query(`SELECT first_name, last_name, roles.title AS role FROM employees LEFT JOIN roles ON employees.role_id = roles.id`, (err, rows) => {
+    db.query(`SELECT e.first_name, e.last_name, e.role_id, CONCAT(m.first_name, ' ', m.last_name) AS manager FROM employees e LEFT JOIN employees m ON e.manager_id = m.id;`, (err, rows) => {
         if (err) {
             console.log(err);
             return;

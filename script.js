@@ -95,7 +95,9 @@ const addEmployee = () => {
             choices: managerArr
         }])
         .then((ans) => {
-            const employee = new Employee(ans.firstName, ans.lastName, ans.role, ans.manager);
+            let managerId = '';
+            (ans.manager === 'null') ? managerId = null : managerId = ans.manager;
+            const employee = new Employee(ans.firstName, ans.lastName, ans.role, managerId);
             newEmployee(employee);
             console.log('Employee Added!');
             employees = getEmployees();
