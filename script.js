@@ -1,7 +1,7 @@
 const db = require('./db/connection');
 const inquirer = require('inquirer');
 const { deptArrFill, roleArrFill, employeeArrFill, managerArrFill, getDept, getRoles, getEmployees } = require('./utils/index');
-const { newDept, newRole, newEmployee } = require('./utils/newData');
+const { newDept, newRole, newEmployee, updateRole } = require('./utils/newData');
 const Department = require('./lib/Department');
 const Roles = require('./lib/Roles');
 const Employee = require('./lib/Employee');
@@ -101,16 +101,25 @@ const addEmployee = () => {
         })    
 };
 
-const updateRole = () => {
+const updateEmployee = () => {
     return inquirer
         .prompt([{
             type: 'list',
             name: 'employee',
             message: 'Which employee would you like to update?',
             choices: employeeArr
+        },{
+            type: 'list',
+            name: 'newRole',
+            message: 'What is the employees new role?',
+            choices: roleArr
         }])
         .then((ans) => {
-            // TODO: Ask for more information, Update employee with new information
+            console.log(ans);
+            updateRole(ans);
+            console.log('Role Updated!');
+            employees = getEmployees();
+            return init();
         })    
 };
 
@@ -142,7 +151,7 @@ const init = () => {
                 case 'add an employee':
                     return addEmployee();
                 case 'update an employee role':
-                    return updateRole();
+                    return updateEmployee();
             }
         })
 };

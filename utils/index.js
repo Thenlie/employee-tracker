@@ -40,7 +40,7 @@ const employeeArrFill = () => {
             return;
         }
         for (let i = 0; i < rows.length; i++) {
-            employeeArr.push(rows[i].first_name + ' ' + rows[i].last_name);
+            employeeArr.push({name:rows[i].first_name + ' ' + rows[i].last_name, value:rows[i].id});
         }
     });
     return employeeArr;
