@@ -2,7 +2,7 @@
 
   ## Description
 
-  A command-line application built from scratch to manage a company's employee database, using Node.js, Inquirer, and MySQL.
+  A command-line application built from scratch to manage a company's employee database, using Node.js, Inquirer, and MySQL. Made during the U of U full-stack coding bootcamp. 
 
   ## Table of Contents
 
@@ -10,18 +10,23 @@
   * [Usage](#Usage)
   * [License](#license)
   * [Contributing](#Contributing)
-  * [Tests](#Tests)
   * [Questions](#Questions)
 
   ***
 
   ## Installation
 
-  Simply run the `npm i` command to install dependencies.
+  First, clone the repository onto your local machine. Next, simply run the `npm i` command to install all dependencies. That's it!
+
+    ### NPM Packages Used
+
+    * MySQL2
+    * Inquirer
+    * Console.Table
 
   ## Usage
 
-  You can start this application with the command `npm start`.
+  You can start this application with the command `npm start` or `node script.js`. Once you start the application you will be given a set of prompts to choose from. Use these to view and build out your employee database!
 
   
   ## License
@@ -50,15 +55,9 @@
   > SOFTWARE.
     
 
-    
-
   ## Contributing
 
-  None
-
-  ## Tests
-
-  None
+  Feel free to fork this repo and make it your own. Then submit a pull request to have it merged with this repository. 
   
   ## Questions
 
