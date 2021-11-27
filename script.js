@@ -7,10 +7,10 @@ const Roles = require('./lib/Roles');
 const Employee = require('./lib/Employee');
 
 // Array of data
-const deptArr = deptArrFill();
-const roleArr = roleArrFill();
-const employeeArr = employeeArrFill();
-const managerArr = managerArrFill();
+let deptArr = deptArrFill();
+let roleArr = roleArrFill();
+let employeeArr = employeeArrFill();
+let managerArr = managerArrFill();
 
 // Array of objects
 let departments = getDept();
@@ -42,6 +42,7 @@ const addDept = () => {
             newDept(department);
             console.log('Department Added!');
             departments = getDept();
+            deptArr = deptArrFill();
             return init();
         })  
 };
@@ -67,6 +68,7 @@ const addRole = () => {
             newRole(role);
             console.log('Role Added!');
             roles = getRoles();
+            roleArr = roleArrFill();
             return init();
         })    
 };
@@ -97,6 +99,7 @@ const addEmployee = () => {
             newEmployee(employee);
             console.log('Employee Added!');
             employees = getEmployees();
+            employeeArr = employeeArrFill();
             return init();
         })    
 };
@@ -119,6 +122,7 @@ const updateEmployee = () => {
             updateRole(ans);
             console.log('Role Updated!');
             employees = getEmployees();
+            employeeArr = employeeArrFill();
             return init();
         })    
 };

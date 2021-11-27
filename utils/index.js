@@ -20,7 +20,7 @@ const deptArrFill = () => {
 
 // Populate array with roles
 const roleArrFill = () => {
-    db.query(`SELECT DISTINCT * FROM roles`, (err, rows) => {
+    db.query(`SELECT DISTINCT * FROM roles LEFT JOIN department ON roles.department_id = department.id`, (err, rows) => {
         if (err) {
             console.log(err);
             return;
@@ -64,7 +64,7 @@ const managerArrFill = () => {
 // Get departments
 const getDept = () => {
     const departments = [];
-    db.query(`SELECT * FROM department`, (err, rows) => {
+    db.query(`SELECT name FROM department`, (err, rows) => {
         if (err) {
             console.log(err);
             return;
@@ -79,7 +79,7 @@ const getDept = () => {
 // Get roles
 const getRoles = () => {
     const roles = [];
-    db.query(`SELECT * FROM roles`, (err, rows) => {
+    db.query(`SELECT title, salary, department.name AS department FROM roles LEFT JOIN department ON roles.department_id = department.id`, (err, rows) => {
         if (err) {
             console.log(err);
             return;
@@ -94,7 +94,8 @@ const getRoles = () => {
 // Get employees
 const getEmployees = () => {
     const employees = [];
-    db.query(`SELECT * FROM employees ORDER BY last_name`, (err, rows) => {
+    // db.query(`SELECT * FROM employees ORDER BY last_name`, (err, rows) => {
+    db.query(`SELECT first_name, last_name, roles.title AS role FROM employees LEFT JOIN roles ON employees.role_id = roles.id`, (err, rows) => {
         if (err) {
             console.log(err);
             return;
