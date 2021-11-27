@@ -28,6 +28,8 @@
 
   You can start this application with the command `npm start` or `node script.js`. Once you start the application you will be given a set of prompts to choose from. Use these to view and build out your employee database!
 
+  *NOTE:* If an employees manager is set to 'null' that means they are a manager. When creating an employee, set the manager to null to make them a manager. 
+
   
   ## License
   
