@@ -1,6 +1,7 @@
 const db = require('./db/connection');
 const inquirer = require('inquirer');
-const { deptArrFill, roleArrFill, employeeArrFill, managerArrFill, getDept, getRoles, getEmployees } = require('./utils/index');
+const { deptArrFill, roleArrFill, employeeArrFill, managerArrFill } = require('./utils/index');
+const { getDept, getRoles, getEmployees } = require('./utils/getTables');
 const { newDept, newRole, newEmployee, updateRole } = require('./utils/newData');
 const Department = require('./lib/Department');
 const Roles = require('./lib/Roles');
