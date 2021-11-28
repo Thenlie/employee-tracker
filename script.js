@@ -2,7 +2,8 @@ const db = require('./db/connection');
 const inquirer = require('inquirer');
 const { deptArrFill, roleArrFill, employeeArrFill, managerArrFill } = require('./utils/populateArray');
 const { getDept, getRoles, getEmployees } = require('./utils/getTables');
-const { newDept, newRole, newEmployee, updateRole } = require('./utils/newData');
+const { newDept, newRole, newEmployee } = require('./utils/newData');
+const { updateRole, deleteEmployee } = require('./utils/alterData');
 const Department = require('./lib/Department');
 const Roles = require('./lib/Roles');
 const Employee = require('./lib/Employee');
@@ -24,7 +25,7 @@ const initPrompt = () => {
             type: 'list',
             name: 'action',
             message: 'What would you like to do?',
-            choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role', 'quit']
+            choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role', 'delete a department', 'delete a role', 'delete an employee', 'quit']
         })
         .then((ans) => {
             return ans;
@@ -121,13 +122,29 @@ const updateEmployee = () => {
             choices: roleArr
         }])
         .then((ans) => {
-            console.log(ans);
             updateRole(ans);
             console.log('Role Updated!');
             employees = getEmployees();
             employeeArr = employeeArrFill();
             return init();
         })    
+};
+
+const removeEmployee = () => {
+    return inquirer
+        .prompt([{
+            type: 'list',
+            name: 'employee',
+            message: 'Which employee would you like to update?',
+            choices: employeeArr
+        }])
+        .then((ans) => {
+            deleteEmployee(ans);
+            console.log('Employee Deleted!');
+            employees = getEmployees();
+            employeeArr = employeeArrFill();
+            return init();
+        })
 };
 
 const connect = () => {
@@ -159,6 +176,12 @@ const init = () => {
                     return addEmployee();
                 case 'update an employee role':
                     return updateEmployee();
+                case 'delete a department':
+                    return init();
+                case 'delete a role':
+                    return init();
+                case 'delete an employee':
+                    return removeEmployee();
                 case 'quit':
                     process.exit();
             }

@@ -26,13 +26,4 @@ const newEmployee = (obj) => {
     })
 };
 
-const updateRole = (obj) => {
-    const sql = `UPDATE employees SET role_id = ? WHERE id = ?`
-    const params = [obj.newRole, obj.employee]
-    db.query(sql, params, (err, res) => {
-        if (err) throw err;
-        return;
-    })
-}
-
-module.exports = { newDept, newRole, newEmployee, updateRole }
+module.exports = { newDept, newRole, newEmployee }
