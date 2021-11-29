@@ -11,7 +11,7 @@ const updateRole = (obj) => {
 
 const deleteEmployee = (obj) => {
     const sql = `DELETE FROM employees WHERE id = ${obj.employee}`;
-    db.query(sql, (err, row) => {
+    db.query(sql, (err, res) => {
         if (err) throw err;
         return;
     })

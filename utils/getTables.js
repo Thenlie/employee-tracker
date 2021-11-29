@@ -1,4 +1,5 @@
 const db = require('../db/connection');
+const { deptArrFill } = require('./populateArray');
 
 // Get departments
 const getDept = () => {
@@ -33,9 +34,7 @@ const getRoles = () => {
 // Get employees
 const getEmployees = () => {
     const employees = [];
-    // db.query(`SELECT * FROM employees ORDER BY last_name`, (err, rows) => {
-    // db.query(`SELECT first_name, last_name, roles.title AS role FROM employees LEFT JOIN roles ON employees.role_id = roles.id`, (err, rows) => {
-    db.query(`SELECT e.first_name, e.last_name, e.role_id, CONCAT(m.first_name, ' ', m.last_name) AS manager FROM employees e LEFT JOIN employees m ON e.manager_id = m.id;`, (err, rows) => {
+    db.query(`SELECT e.first_name, e.last_name, e.role_id, CONCAT(m.first_name, ' ', m.last_name) AS manager FROM employees e LEFT JOIN employees m ON e.manager_id = m.id`, (err, rows) => {
         if (err) {
             console.log(err);
             return;
@@ -46,5 +45,29 @@ const getEmployees = () => {
     });
     return employees;
 };
+
+// Get employees and sort by selected method
+// const getEmployees = (sort) => {
+//     const params = ''
+//     switch (sort) {
+//         case 'alpha':
+//             params = 'e.last_name';
+//         case 'dept':
+//             params = 'department';
+//         case 'role':
+//             params = 'role';
+//     }
+//     const employees = [];
+//     db.query(`SELECT e.first_name, e.last_name, e.role_id, CONCAT(m.first_name, ' ', m.last_name) AS manager FROM employees e LEFT JOIN employees m ON e.manager_id = m.id ORDER BY ?`, params, (err, rows) => {
+//         if (err) {
+//             console.log(err);
+//             return;
+//         }
+//         for (let i = 0; i < rows.length; i++) {
+//             employees.push(rows[i]);
+//         }
+//     });
+//     return employees;
+// };
 
 module.exports = { getDept, getRoles, getEmployees }

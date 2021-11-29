@@ -32,12 +32,40 @@ const initPrompt = () => {
         })
 };
 
+const viewEmployees = () => {
+    return inquirer
+        .prompt([{
+            type: 'list',
+            name: 'sort',
+            message: 'How would you like to view the employees?',
+            choices: ['alphabetically', 'by department', 'by role']
+        }])
+        .then((ans) => {
+            switch(ans) {
+                case 'alphabetically':
+                    getEmployees('alpha');
+                case 'by department':
+                    getEmployees('dept');
+                case 'by role':
+                    getEmployees('role');
+            }
+            console.log(ans)
+        })
+}
+
 const addDept = () => {
     return inquirer
         .prompt([{
             type: 'input',
             name: 'name',
-            message: 'What is the name of the department?'
+            message: 'What is the name of the department?',
+            validate: function(name) {
+                if (!name) {
+                    console.log('You must enter a name!')
+                    return false;
+                }
+                return true;
+            }
         }])  
         .then((ans) => {
             const department = new Department(ans.name);
@@ -54,11 +82,26 @@ const addRole = () => {
         .prompt([{
             type: 'input',
             name: 'title',
-            message: 'What is the name of the role?'
+            message: 'What is the name of the role?',
+            validate: function(title) {
+                if (!title) {
+                    console.log('You must enter a name!')
+                    return false;
+                } 
+                return true;
+            }
             }, {
             type: 'input',
             name: 'salary',
-            message: 'What is the salary of the role?'
+            message: 'What is the salary of the role?',
+            validate: function(salary) {
+                if (typeof salary === 'number' && salary) {
+                    return true;
+                } else {
+                    console.log('You must enter a salary number!')
+                    return false;
+                }
+            }
             }, {
             type: 'list',
             name: 'department',
@@ -80,11 +123,25 @@ const addEmployee = () => {
         .prompt([{
             type: 'input',
             name: 'firstName',
-            message: "What is the employee's first name?"
+            message: "What is the employee's first name?",
+            validate: function(firstName) {
+                if (!firstName) {
+                    console.log('You must enter a name!')
+                    return false;
+                } 
+                return true;
+            }
         }, {
             type: 'input',
             name: 'lastName',
-            message: "What is the employee's last name?"
+            message: "What is the employee's last name?",
+            validate: function(lastName) {
+                if (!lastName) {
+                    console.log('You must enter a name!')
+                    return false;
+                } 
+                return true;
+            }
         }, {
             type: 'list',
             name: 'role',
@@ -158,9 +215,7 @@ const init = () => {
         .then(ans => {
             switch (ans.action) {
                 case 'view all departments':
-                    // let x = getDept();
                     console.table(departments);
-                    // console.table(x);
                     return init();
                 case 'view all roles':
                     console.table(roles);
