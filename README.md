@@ -18,7 +18,7 @@
 
   First, clone the repository onto your local machine. Next, simply run the `npm i` command to install all dependencies. That's it!
 
-    ### NPM Packages Used
+    NPM Packages Used
 
     * MySQL2
     * Inquirer
@@ -30,7 +30,10 @@
 
   *NOTE:* If an employees manager is set to 'null' that means they are a manager. When creating an employee, set the manager to null to make them a manager. 
 
-  
+  ![Application walkthrough GIF](https://github.com/Thenlie/employee-tracker/blob/main/media/video-walkthrough.gif)  
+
+  ![Link to the application walkthrough](https://drive.google.com/file/d/1It7Niem6JvA6i4oqisRDqHyGL_dDOO52/view)
+
   ## License
   
   
