@@ -1,9 +1,9 @@
 const db = require('./db/connection');
 const inquirer = require('inquirer');
-const { deptArrFill, roleArrFill, employeeArrFill, managerArrFill } = require('./utils/populateArray');
+const { deptArrFill, roleArrFill, employeeArrFill } = require('./utils/populateArray');
 const { getDept, getRoles, getEmployees } = require('./utils/getTables');
 const { newDept, newRole, newEmployee } = require('./utils/newData');
-const { updateRole, deleteEmployee } = require('./utils/alterData');
+const { updateRole, updateManager, deleteDept, deleteRole, deleteEmployee } = require('./utils/alterData');
 const Department = require('./lib/Department');
 const Roles = require('./lib/Roles');
 const Employee = require('./lib/Employee');
@@ -12,7 +12,6 @@ const Employee = require('./lib/Employee');
 let deptArr = deptArrFill();
 let roleArr = roleArrFill();
 let employeeArr = employeeArrFill();
-let managerArr = managerArrFill();
 
 // Array of objects
 let departments = getDept();
@@ -25,33 +24,12 @@ const initPrompt = () => {
             type: 'list',
             name: 'action',
             message: 'What would you like to do?',
-            choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role', 'delete a department', 'delete a role', 'delete an employee', 'quit']
+            choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role', 'update an employee\'s manager', 'delete a department', 'delete a role', 'delete an employee', 'quit']
         })
         .then((ans) => {
             return ans;
         })
 };
-
-const viewEmployees = () => {
-    return inquirer
-        .prompt([{
-            type: 'list',
-            name: 'sort',
-            message: 'How would you like to view the employees?',
-            choices: ['alphabetically', 'by department', 'by role']
-        }])
-        .then((ans) => {
-            switch(ans) {
-                case 'alphabetically':
-                    getEmployees('alpha');
-                case 'by department':
-                    getEmployees('dept');
-                case 'by role':
-                    getEmployees('role');
-            }
-            console.log(ans)
-        })
-}
 
 const addDept = () => {
     return inquirer
@@ -95,10 +73,10 @@ const addRole = () => {
             name: 'salary',
             message: 'What is the salary of the role?',
             validate: function(salary) {
-                if (typeof salary === 'number' && salary) {
+                if (!isNaN(salary)) {
                     return true;
                 } else {
-                    console.log('You must enter a salary number!')
+                    console.log('You must enter a salary number!');
                     return false;
                 }
             }
@@ -151,12 +129,10 @@ const addEmployee = () => {
             type: 'list',
             name: 'manager',
             message: "Who is the employee's manager?",
-            choices: managerArr
+            choices: [{name:'No Manager', value:null}].concat(employeeArr)
         }])
         .then((ans) => {
-            let managerId = '';
-            (ans.manager === 'none') ? managerId = null : managerId = ans.manager;
-            const employee = new Employee(ans.firstName, ans.lastName, ans.role, managerId);
+            const employee = new Employee(ans.firstName, ans.lastName, ans.role, ans.manager);
             newEmployee(employee);
             console.log('Employee Added!');
             employees = getEmployees();
@@ -165,7 +141,7 @@ const addEmployee = () => {
         })    
 };
 
-const updateEmployee = () => {
+const updateEmployeeRole = () => {
     return inquirer
         .prompt([{
             type: 'list',
@@ -187,12 +163,75 @@ const updateEmployee = () => {
         })    
 };
 
-const removeEmployee = () => {
+const updateEmployeeManager = () => {
     return inquirer
         .prompt([{
             type: 'list',
             name: 'employee',
             message: 'Which employee would you like to update?',
+            choices: employeeArr
+        },{
+            type: 'list',
+            name: 'newManager',
+            message: 'Who is the employees new manager?',
+            choices: employeeArr
+        }])
+        .then((ans) => {
+            updateManager(ans);
+            console.log('Manager Updated!');
+            employees = getEmployees();
+            employeeArr = employeeArrFill();
+            return init();
+        })    
+};
+
+
+const removeDept = () => {
+    return inquirer
+        .prompt([{
+            type: 'list',
+            name: 'department',
+            message: 'Which department would you like to delete?',
+            choices: deptArr
+        }])
+        .then((ans) => {
+            deleteDept(ans);
+            console.log('Department Deleted!');
+            departments = getDept();
+            deptArr = deptArrFill();
+            roles = getRoles();
+            roleArr = roleArrFill();
+            employees = getEmployees();
+            employeeArr = employeeArrFill();
+            return init();
+        })
+};
+
+const removeRole = () => {
+    return inquirer
+        .prompt([{
+            type: 'list',
+            name: 'role',
+            message: 'Which role would you like to delete?',
+            choices: roleArr
+        }])
+        .then((ans) => {
+            deleteRole(ans);
+            console.log('Role Deleted!');
+            roles = getRoles();
+            roleArr = roleArrFill();
+            employees = getEmployees();
+            employeeArr = employeeArrFill();
+            return init();
+        })
+};
+
+const removeEmployee = () => {
+    return inquirer
+        .prompt([{
+            type: 'list',
+            name: 'employee',
+            message: 'Which employee would you like to delete?',
             choices: employeeArr
         }])
         .then((ans) => {
@@ -230,11 +269,13 @@ const init = () => {
                 case 'add an employee':
                     return addEmployee();
                 case 'update an employee role':
-                    return updateEmployee();
+                    return updateEmployeeRole();
+                case 'update an employee\'s manager':
+                    return updateEmployeeManager();
                 case 'delete a department':
-                    return init();
+                    return removeDept();
                 case 'delete a role':
-                    return init();
+                    return removeRole();
                 case 'delete an employee':
                     return removeEmployee();
                 case 'quit':

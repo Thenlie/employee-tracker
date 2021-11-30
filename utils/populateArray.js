@@ -1,11 +1,8 @@
 const db = require('../db/connection');
 
-const deptArr = [];
-const roleArr = [];
-const employeeArr = [];
-
 // Populate array with departments
 const deptArrFill = () => {
+    const deptArr = [];
     db.query(`SELECT * FROM department`, (err, rows) => {
         if (err) {
             console.log(err);
@@ -20,7 +17,8 @@ const deptArrFill = () => {
 
 // Populate array with roles
 const roleArrFill = () => {
-    db.query(`SELECT DISTINCT * FROM roles LEFT JOIN department ON roles.department_id = department.id`, (err, rows) => {
+    const roleArr = [];
+    db.query(`SELECT * FROM roles`, (err, rows) => {
         if (err) {
             console.log(err);
             return;
@@ -34,6 +32,7 @@ const roleArrFill = () => {
 
 // Populate array with employees
 const employeeArrFill = () => {
+    const employeeArr = [];
     db.query(`SELECT * FROM employees ORDER BY last_name`, (err, rows) => {
         if (err) {
             console.log(err);
@@ -46,19 +45,4 @@ const employeeArrFill = () => {
     return employeeArr;
 };
 
-// Populate array with managers
-const managerArrFill = () => {
-    const managerArr = ['none'];
-    db.query(`SELECT * FROM employees WHERE manager_id IS NULL`, (err, rows) => {
-        if (err) {
-            console.log(err);
-            return;
-        }
-        for (let i = 0; i < rows.length; i++) {
-            managerArr.push({name:rows[i].first_name + ' ' + rows[i].last_name, value:rows[i].id})
-        }
-    });
-    return managerArr;
-};
-
-module.exports = { deptArrFill, roleArrFill, employeeArrFill, managerArrFill }
+module.exports = { deptArrFill, roleArrFill, employeeArrFill }
