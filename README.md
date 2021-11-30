@@ -32,7 +32,7 @@
 
   ![Application walkthrough GIF](https://github.com/Thenlie/employee-tracker/blob/main/media/video-walkthrough.gif)  
 
-  ![Link to the application walkthrough](https://drive.google.com/file/d/1It7Niem6JvA6i4oqisRDqHyGL_dDOO52/view)
+  [Link to the application walkthrough](https://drive.google.com/file/d/1It7Niem6JvA6i4oqisRDqHyGL_dDOO52/view)
 
   ## License
   
